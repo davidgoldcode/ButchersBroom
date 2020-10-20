@@ -1,29 +1,29 @@
 const express = require("express");
-const db = require("./plants-model.js");
+const db = require("../users/user-model.js");
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
 
-// get all plants
+// get all users
 router.get("/", (req, res) => {
   db.getAll()
-    .then((plants) => {
-      res.status(200).json({ data: plants });
+    .then((users) => {
+      res.status(200).json({ data: users });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
 });
 
-// get plant by id
+// get user by id
 router.get("/:id", (req, res) => {
   const id = req.params.id;
 
   db.getById(id)
-    .then((plant) => {
-      if (plant) {
-        res.json({ plant });
+    .then((user) => {
+      if (user) {
+        res.json({ user });
       } else {
-        res.status(404).json({ message: "plant not found. Check id." });
+        res.status(404).json({ message: "user not found. Check id." });
       }
     })
     .catch((err) => {
@@ -31,17 +31,17 @@ router.get("/:id", (req, res) => {
     });
 });
 
-// edit plant info
-router.put("/plant/:id", (req, res) => {
+// edit user info
+router.put("/user/:id", (req, res) => {
   const id = req.params.id;
   const changes = req.body;
 
   db.edit(id, changes)
-    .then((plant) => {
-      if (plant) {
-        res.status(200).json({ plant });
+    .then((user) => {
+      if (user) {
+        res.status(200).json({ user });
       } else {
-        res.status(404).json({ message: "Could not find plant. Check id. " });
+        res.status(404).json({ message: "Could not find user. Check id. " });
       }
     })
     .catch((err) => {
@@ -49,16 +49,16 @@ router.put("/plant/:id", (req, res) => {
     });
 });
 
-// delete plant
-router.delete("/plant/:id", (req, res) => {
+// delete user
+router.delete("/user/:id", (req, res) => {
   const id = req.params.id;
 
   db.remove(id)
-    .then((plant) => {
-      if (plant) {
-        res.status(200).json({ removed: plant });
+    .then((user) => {
+      if (user) {
+        res.status(200).json({ removed: user });
       } else {
-        res.status(404).json({ message: "Could not find plant. Check id. " });
+        res.status(404).json({ message: "Could not find user. Check id. " });
       }
     })
     .catch((err) => {

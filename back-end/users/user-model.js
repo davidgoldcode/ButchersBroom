@@ -1,4 +1,4 @@
-const db = require("../../database/connection.js");
+const db = require("../connection.js");
 
 module.exports = {
   getAll,
@@ -6,6 +6,7 @@ module.exports = {
   add,
   edit,
   remove,
+  getById,
 };
 
 function getAll() {

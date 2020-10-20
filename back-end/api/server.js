@@ -4,9 +4,9 @@ const helmet = require("helmet");
 const session = require("express-session");
 const KnexSessionStore = require("connect-session-knex")(session);
 
-const connection = require("../database/connection.js");
+const connection = require("../connection.js");
 const PlantsRouter = require("../plants/Plants-router.js");
-const UserRouter = require("./users/User-router.js");
+const UserRouter = require("../users/User-router.js");
 
 const server = express();
 
