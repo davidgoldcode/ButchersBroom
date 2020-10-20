@@ -1,6 +1,6 @@
 const cleaner = require("knex-cleaner");
 
-function cleanTables(kenx) {
+function cleanTables(knex) {
   return cleaner
     .clean(knex, {
       mode: "truncate",
