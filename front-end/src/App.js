@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./Components/Login";
+import Register from "./Components/Register";
 import "./App.css";
 import * as yup from "yup";
 import formSchemaLogin from "./validation/formSchemaLogin";
+import formSchemaRegister from "./validation/formSchemaRegister";
 import axios from "axios";
 
 const initialUserValues = {
@@ -26,15 +28,16 @@ function App() {
   const [userValues, setUserValues] = useState(initialUserValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(initialDisabled);
-  // const [funFact, setFunFact] = useState([''])
 
   const history = useHistory();
 
-  const getUser = () => {
-    const creds = userValues;
+  const getUser = user => {
+    const creds = user;
+    let route = `${user.email ? "register" : "login"}`;
+    console.log(route, "ROUTE");
 
     axios
-      .post("/api/auth", creds)
+      .post(`/api/auth/${route}`, creds)
       .then(res => {
         debugger;
         localStorage.setItem("token", res.data.access_token);
@@ -47,14 +50,20 @@ function App() {
   const submit = () => {
     const newUser = {
       username: userValues.username.trim(),
+      email: userValues.email.trim(),
       password: userValues.password.trim()
     };
     getUser(newUser);
   };
 
   const inputChange = (name, value) => {
+    let schema = formSchemaLogin;
+    if (/email/i.test(name)) {
+      schema = formSchemaRegister;
+    }
+
     yup
-      .reach(formSchemaLogin, name)
+      .reach(schema, name)
       .validate(value)
       .then(valid => {
         setFormErrors({
@@ -99,9 +108,16 @@ function App() {
           errors={formErrors}
         />
       </Route>
+      <Route exact path="/register">
+        <Register
+          submit={submit}
+          inputChange={inputChange}
+          values={userValues}
+          disabled={disabled}
+          errors={formErrors}
+        />
+      </Route>
     </Router>
-
-    //       <Route exact path="/" component={Register} />
 
     //     </Switch>
     //   </div>
