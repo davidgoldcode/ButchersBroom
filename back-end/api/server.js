@@ -7,6 +7,7 @@ const KnexSessionStore = require("connect-session-knex")(session);
 const connection = require("../connection.js");
 const PlantsRouter = require("../plants/Plants-router.js");
 const UserRouter = require("../users/User-router.js");
+const AuthRouter = require("../auth/auth-router.js");
 
 const server = express();
 
@@ -36,6 +37,7 @@ server.use(session(sessionConfiguration));
 
 server.use("/api/plants", PlantsRouter);
 server.use("/api/users", UserRouter);
+server.use("api/auth", AuthRouter);
 
 server.get("/", (req, res) => {
   res.status(200).json({ api: "up" });
