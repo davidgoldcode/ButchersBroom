@@ -5,6 +5,7 @@ exports.seed = function (knex) {
       species: "Rose",
       frequency: 1,
       user_id: 1,
+      notes: "Needs TLC",
       last_watered: "2020-03-03",
     },
     {
@@ -12,6 +13,7 @@ exports.seed = function (knex) {
       species: "Butchers Broom",
       frequency: 1,
       user_id: 1,
+      notes: "Got at farmers market",
       last_watered: "2020-03-03",
     },
     {
@@ -19,6 +21,7 @@ exports.seed = function (knex) {
       species: "Daisy",
       frequency: 2,
       user_id: 1,
+      notes: "Need to find somebody to water while on vacation",
       last_watered: "2020-03-03",
     },
   ]);

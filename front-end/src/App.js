@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
+import Dashboard from "./Components/Dashboard";
 import "./App.css";
 import * as yup from "yup";
 import formSchemaLogin from "./validation/formSchemaLogin";
@@ -116,6 +117,9 @@ function App() {
           disabled={disabled}
           errors={formErrors}
         />
+      </Route>
+      <Route exact path="/dashboard">
+        <Dashboard />
       </Route>
     </Router>
 

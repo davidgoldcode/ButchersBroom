@@ -15,6 +15,7 @@ exports.up = function (knex) {
 
         plant.string("name", 256).notNullable().unique();
         plant.string("species", 256).notNullable();
+        plant.string("notes");
         plant.integer("frequency", 256);
         plant.date("last_watered");
         // connect plant with the user that created it
