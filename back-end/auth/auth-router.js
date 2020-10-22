@@ -11,7 +11,7 @@ router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   if (isValid(req.body)) {
-    dbGetBy({ username })
+    db.getBy({ username })
       .then(([user]) => {
         if (user && bcryptjs.compareSync(password, user.password)) {
           const token = getJwt(user);
