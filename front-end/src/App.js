@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Dashboard from "./Components/Dashboard";
-import "./App.css";
 import * as yup from "yup";
 import formSchemaLogin from "./validation/formSchemaLogin";
 import formSchemaRegister from "./validation/formSchemaRegister";
 import axios from "axios";
+import axiosWithAuth from "./utils/axiosWithAuth";
 
 const initialUserValues = {
   username: "",
@@ -35,9 +35,8 @@ function App() {
   const getUser = user => {
     const creds = user;
     let route = `${user.email ? "register" : "login"}`;
-    console.log(route, "ROUTE");
 
-    axios
+    axiosWithAuth()
       .post(`/api/auth/${route}`, creds)
       .then(res => {
         debugger;
@@ -45,7 +44,9 @@ function App() {
         setUsers([...users, res.data]);
         history.push("/dashboard");
       })
-      .catch(err => {}); // to edit
+      .catch(err => {
+        console.log(err);
+      }); // to edit
   };
 
   const submit = () => {
@@ -97,35 +98,32 @@ function App() {
     //     {/* <Navigation /> */}
     //     <Switch>
     //       {/* Login component goes here */}
-
-    //       <PrivateRoute path="/dashboard" component={Dashboard} />
     <Router>
-      <Route exact path="/login">
-        <Login
-          submit={submit}
-          inputChange={inputChange}
-          values={userValues}
-          disabled={disabled}
-          errors={formErrors}
-        />
-      </Route>
-      <Route exact path="/register">
-        <Register
-          submit={submit}
-          inputChange={inputChange}
-          values={userValues}
-          disabled={disabled}
-          errors={formErrors}
-        />
-      </Route>
-      <Route exact path="/dashboard">
-        <Dashboard />
-      </Route>
+      <Switch>
+        {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
+        <Route exact path="/login">
+          <Login
+            submit={submit}
+            inputChange={inputChange}
+            values={userValues}
+            disabled={disabled}
+            errors={formErrors}
+          />
+        </Route>
+        <Route exact path="/register">
+          <Register
+            submit={submit}
+            inputChange={inputChange}
+            values={userValues}
+            disabled={disabled}
+            errors={formErrors}
+          />
+        </Route>
+        <Route exact path="/dashboard">
+          <Dashboard />
+        </Route>
+      </Switch>
     </Router>
-
-    //     </Switch>
-    //   </div>
-    // </Router>
   );
 }
 

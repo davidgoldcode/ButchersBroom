@@ -37,7 +37,7 @@ server.use(session(sessionConfiguration));
 
 server.use("/api/plants", PlantsRouter);
 server.use("/api/users", UserRouter);
-server.use("api/auth", AuthRouter);
+server.use("/api/auth", AuthRouter);
 
 server.get("/", (req, res) => {
   res.status(200).json({ api: "up" });

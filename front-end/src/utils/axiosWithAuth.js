@@ -1,11 +1,14 @@
 import axios from "axios";
 
-export const axiosWithAuth = () => {
+const axiosWithAuth = () => {
   const token = window.localStorage.getItem("token");
+  debugger;
   return axios.create({
-    baseURL: "https://watermyplants-dg0511.herokuapp.com/",
+    baseURL: "https://butchers-broom.herokuapp.com/",
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
 };
+
+export default axiosWithAuth;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import CameraIcon from "@material-ui/icons/PhotoCamera";
@@ -12,7 +12,14 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
+import EcoIcon from "@material-ui/icons/Eco";
+import Input from "@material-ui/core/Input";
+import { connect } from "react-redux";
+import {
+  addPlant,
+  deletePlant,
+  editPlant
+} from "../store/actions/plantActions";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -46,17 +53,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const buttons = ["view", "edit", "delete"];
 
-const Dashboard = () => {
+const Dashboard = ({ plants, addPlant, editPlant, deletePlant }) => {
   const classes = useStyles();
+  const [editing, setEditing] = useState(null);
+
+  const clickHandler = evt => {
+    evt.preventDefault();
+    const { name } = evt.target;
+    if (name.toLowerCase() === "edit") {
+      editPlant();
+    } else if (name.toLowerCase() === "delete") {
+      deletePlant();
+    } else {
+      return;
+    }
+  };
+
+  const doubleClickHandler = index => {
+    setEditing(index);
+  };
 
   return (
     <>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <CameraIcon className={classes.icon} />
+          <EcoIcon className={classes.icon} />
           <Typography variant="h6" color="inherit" noWrap>
             Butcher's Broom
           </Typography>
@@ -66,8 +90,8 @@ const Dashboard = () => {
         <div className={classes.heroContent}>
           <Container maxWidth="sm">
             <Typography
-              component="h1"
-              variant="h2"
+              component="h2"
+              variant="h3"
               align="center"
               color="textPrimary"
               gutterBottom
@@ -75,7 +99,7 @@ const Dashboard = () => {
               You have 0 plants that need to be watered
             </Typography>
             <Typography
-              variant="h5"
+              variant="h6"
               align="center"
               color="textSecondary"
               paragraph
@@ -102,30 +126,51 @@ const Dashboard = () => {
           {/* End hero unit */}
           <Grid container spacing={6}>
             {/* map through state */}
-            {cards.map(card => (
-              <Grid item key={card} xs={12} sm={6} md={6}>
-                <Card className={classes.card}>
+            {plants.map((plant, index) => (
+              <Grid item key={index} xs={12} sm={6} md={6}>
+                <Card>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image="https://source.unsplash.com/collection/4380837/1600x900"
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      {plant.name}
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="h2">
+                      {plant.species}
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
+                      <Input
+                        disabled={editing === index ? false : true}
+                        disableUnderline="true"
+                        multiline="true"
+                        placeholder={plant.notes}
+                        value={plant.notes}
+                        name={index}
+                        onDoubleClick={() => doubleClickHandler(index)}
+                        onChange={editPlant}
+                      />
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
-                      View
-                    </Button>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
+                    {buttons.map(item => (
+                      <Button
+                        size="small"
+                        color="primary"
+                        name={
+                          editing === index && item === "edit"
+                            ? "submit changes"
+                            : item
+                        }
+                        onClick={() => setEditing(index)}
+                      >
+                        {editing === index && item === "edit"
+                          ? "submit changes"
+                          : item}
+                      </Button>
+                    ))}
                   </CardActions>
                 </Card>
               </Grid>
@@ -136,19 +181,25 @@ const Dashboard = () => {
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          Butcher's Broom
         </Typography>
         <Typography
           variant="subtitle1"
           align="center"
           color="textSecondary"
           component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
+        ></Typography>
       </footer>
     </>
   );
 };
 
-export default Dashboard;
+const mapStateToProps = state => {
+  return {
+    plants: state.plants
+  };
+};
+
+export default connect(mapStateToProps, { addPlant, editPlant, deletePlant })(
+  Dashboard
+);
