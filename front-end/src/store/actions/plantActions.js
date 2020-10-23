@@ -48,9 +48,8 @@ export const loginUser = info => {
     axiosWithAuth()
       .post(`/api/auth/login`, info)
       .then(res => {
-        console.log(res.data);
         localStorage.setItem("token", res.data.token);
-        // window.location = `${url}/dashboard`;
+        window.location = `${url}/dashboard`;
         dispatch({
           type: LOGIN_USER_SUCCESS,
           payload: res.data.user
@@ -74,7 +73,8 @@ export const registerUser = info => {
     axiosWithAuth()
       .post("/api/auth/register", info)
       .then(res => {
-        dispatch({ type: REGISTER_USER_SUCCESS, payload: res.data.data });
+        console.log(res.data);
+        dispatch({ type: REGISTER_USER_SUCCESS, payload: res.data });
       })
       .catch(err => {
         dispatch({ type: REGISTER_USER_ERROR, payload: err });
@@ -89,34 +89,32 @@ export const registerUser = info => {
 export const addPlant = info => {
   return dispatch => {
     dispatch({ type: ADD_PLANT });
-    setTimeout(function() {
-      axios
-        .post(`${url}`, info)
-        .then(res => {
-          dispatch({
-            type: ADD_PLANT_SUCCESS,
-            payload: res.data
-          });
-        })
-        .catch(err => {
-          console.log(err);
-          dispatch({
-            type: ADD_PLANT_ERROR,
-            payload: {
-              message: "Cant return"
-            }
-          });
+    axiosWithAuth()
+      .post(`${url}`, info)
+      .then(res => {
+        dispatch({
+          type: ADD_PLANT_SUCCESS,
+          payload: res.data
         });
-    }, 3500);
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({
+          type: ADD_PLANT_ERROR,
+          payload: {
+            message: "Cant return"
+          }
+        });
+      });
   };
 };
 
 // Edit Plant
-export const editPlant = info => {
+export const editPlant = (id, info) => {
   return dispatch => {
     dispatch({ type: EDIT_PLANT });
-    axios
-      .post(`${url}`, info)
+    axiosWithAuth()
+      .post(`/plant/${id}`, info)
       .then(res => {
         dispatch({
           type: ADD_PLANT_SUCCESS,
@@ -139,7 +137,7 @@ export const editPlant = info => {
 export const deletePlant = id => {
   return dispatch => {
     axiosWithAuth()
-      .delete(`${url}/${id}`)
+      .delete(`/plant/${id}`)
       .then(res => {
         console.log("I am the res ", res);
         dispatch({ type: DELETE_PLANT_SUCCESS, payload: id });
