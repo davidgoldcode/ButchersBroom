@@ -52,7 +52,7 @@ export const loginUser = info => {
         window.location = `${url}/dashboard`;
         dispatch({
           type: LOGIN_USER_SUCCESS,
-          payload: res.data.user
+          payload: res.data.data
         });
       })
       .catch(err => {
@@ -70,17 +70,16 @@ export const loginUser = info => {
 export const registerUser = info => {
   return dispatch => {
     dispatch({ type: REGISTER_USER });
-    axiosWithAuth()
-      .post("/api/auth/register", info)
+    axios
+      .post(`${url}/api/auth/register`, info)
       .then(res => {
-        console.log(res.data);
-        dispatch({ type: REGISTER_USER_SUCCESS, payload: res.data });
+        dispatch({ type: REGISTER_USER_SUCCESS, payload: res.data.data });
       })
       .catch(err => {
         dispatch({ type: REGISTER_USER_ERROR, payload: err });
       })
       .finally(() => {
-        window.location = `${url}/dashboard`;
+        // window.location = `${url}/dashboard`;
       });
   };
 };
