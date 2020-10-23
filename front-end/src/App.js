@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
@@ -7,8 +6,9 @@ import Dashboard from "./Components/Dashboard";
 import * as yup from "yup";
 import formSchemaLogin from "./validation/formSchemaLogin";
 import formSchemaRegister from "./validation/formSchemaRegister";
-import axios from "axios";
 import axiosWithAuth from "./utils/axiosWithAuth";
+import { connect } from "react-redux";
+import { loginUser, registerUser } from "./store/actions/plantActions.js";
 
 const initialUserValues = {
   username: "",
@@ -24,29 +24,15 @@ const initialFormErrors = {
 
 const initialDisabled = true;
 
-function App() {
+function App({ loginUser, registerUser }) {
   const [users, setUsers] = useState([]);
   const [userValues, setUserValues] = useState(initialUserValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(initialDisabled);
 
-  const history = useHistory();
-
   const getUser = user => {
     const creds = user;
-    let route = `${user.email ? "register" : "login"}`;
-
-    axiosWithAuth()
-      .post(`/api/auth/${route}`, creds)
-      .then(res => {
-        debugger;
-        localStorage.setItem("token", res.data.access_token);
-        setUsers([...users, res.data]);
-        history.push("/dashboard");
-      })
-      .catch(err => {
-        console.log(err);
-      }); // to edit
+    user.email ? registerUser(creds) : loginUser(creds);
   };
 
   const submit = () => {
@@ -110,7 +96,7 @@ function App() {
             errors={formErrors}
           />
         </Route>
-        <Route exact path="/register">
+        <Route path="/register">
           <Register
             submit={submit}
             inputChange={inputChange}
@@ -119,7 +105,7 @@ function App() {
             errors={formErrors}
           />
         </Route>
-        <Route exact path="/dashboard">
+        <Route path="/dashboard">
           <Dashboard />
         </Route>
       </Switch>
@@ -127,4 +113,10 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    plants: state.plants
+  };
+};
+
+export default connect(mapStateToProps, { loginUser, registerUser })(App);

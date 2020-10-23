@@ -26,8 +26,7 @@ export const FETCH_USER_PLANT_LIST_SUCCESS = "FETCH_USER_PLANT_LIST_SUCCESS";
 export const FETCH_USER_PLANT_LIST_ERROR = "FETCH_USER_PLANT_LIST_ERROR";
 
 // API URL
-const url = "https://butchers-broom.herokuapp.com/";
-const vercel = "";
+const url = "https://butchers-broom.herokuapp.com";
 
 export const plantListActions = () => dispatch => {
   dispatch({ type: FETCH_USER_PLANT_LIST });
@@ -46,11 +45,12 @@ export const plantListActions = () => dispatch => {
 export const loginUser = info => {
   return dispatch => {
     dispatch({ type: LOGIN_USER });
-    axios
-      .post(`${url}/plants/myplants`, info)
+    axiosWithAuth()
+      .post(`/api/auth/login`, info)
       .then(res => {
+        console.log(res.data);
         localStorage.setItem("token", res.data.token);
-        window.location = `${vercel}/protected`;
+        // window.location = `${url}/dashboard`;
         dispatch({
           type: LOGIN_USER_SUCCESS,
           payload: res.data.user
@@ -71,8 +71,8 @@ export const loginUser = info => {
 export const registerUser = info => {
   return dispatch => {
     dispatch({ type: REGISTER_USER });
-    axios
-      .post(`${url}`, info)
+    axiosWithAuth()
+      .post("/api/auth/register", info)
       .then(res => {
         dispatch({ type: REGISTER_USER_SUCCESS, payload: res.data.data });
       })
@@ -80,8 +80,7 @@ export const registerUser = info => {
         dispatch({ type: REGISTER_USER_ERROR, payload: err });
       })
       .finally(() => {
-        // window.location = `http://localhost:3000/login`;
-        window.location = `${vercel}/login`;
+        window.location = `${url}/dashboard`;
       });
   };
 };
