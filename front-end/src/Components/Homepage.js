@@ -74,7 +74,12 @@ const Homepage = () => {
             >
               <AddIcon color="primary" />
               <Typography variant="h7" color="primary">
-                <Link to="/register">Register</Link>
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  Register
+                </Link>
               </Typography>
             </Button>
             <Button
@@ -84,7 +89,12 @@ const Homepage = () => {
             >
               <LockOpenIcon color="primary" />
               <Typography variant="h7" color="primary">
-                <Link to="/login">Login</Link>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  Login
+                </Link>
               </Typography>
             </Button>
           </Box>
@@ -93,7 +103,41 @@ const Homepage = () => {
       <Grid container component="main" className={classes.root}>
         <Grid item xs={false} sm={4} md={7} className={classes.image} />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <div className={classes.paper}></div>
+          <div className={classes.paper}>
+            <Typography variant="h2" color="black">
+              Never forget to water your plants again.
+              <div>
+                <Button
+                  variant="contained"
+                  href="#outlined-buttons"
+                  className={classes.button}
+                >
+                  <Typography variant="h7" color="primary">
+                    <Link
+                      to="/register"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      Register
+                    </Link>
+                  </Typography>
+                </Button>
+                <Button
+                  variant="contained"
+                  href="#outlined-buttons"
+                  className={classes.button}
+                >
+                  <Typography variant="h7" color="primary">
+                    <Link
+                      to="/login"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      Login
+                    </Link>
+                  </Typography>
+                </Button>
+              </div>
+            </Typography>
+          </div>
         </Grid>
       </Grid>
       <footer className={classes.footer}>

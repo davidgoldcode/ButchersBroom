@@ -9,6 +9,7 @@ import formSchemaLogin from "./validation/formSchemaLogin";
 import formSchemaRegister from "./validation/formSchemaRegister";
 import { connect } from "react-redux";
 import { loginUser, registerUser } from "./store/actions/plantActions.js";
+import PrivateRoute from "./utils/PrivateRoute";
 
 const initialUserValues = {
   username: "",
@@ -80,7 +81,6 @@ function App({ loginUser, registerUser }) {
   return (
     <Router>
       <Switch>
-        {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
         <Route exact path="/">
           <Homepage />
         </Route>
@@ -102,9 +102,9 @@ function App({ loginUser, registerUser }) {
             errors={formErrors}
           />
         </Route>
-        <Route path="/dashboard">
+        <PrivateRoute path="/dashboard">
           <Dashboard />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </Router>
   );

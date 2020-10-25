@@ -27,6 +27,7 @@ export const FETCH_USER_PLANT_LIST_ERROR = "FETCH_USER_PLANT_LIST_ERROR";
 
 // API URL
 const url = "https://butchers-broom.herokuapp.com";
+const vercel = "https://butchers-broom.vercel.app/";
 
 export const plantListActions = () => dispatch => {
   dispatch({ type: FETCH_USER_PLANT_LIST });
@@ -49,7 +50,7 @@ export const loginUser = info => {
       .post(`/api/auth/login`, info)
       .then(res => {
         localStorage.setItem("token", res.data.token);
-        window.location = `${url}/dashboard`;
+        // window.location = `${vercel}/dashboard`;
         dispatch({
           type: LOGIN_USER_SUCCESS,
           payload: res.data.data
@@ -79,7 +80,7 @@ export const registerUser = info => {
         dispatch({ type: REGISTER_USER_ERROR, payload: err });
       })
       .finally(() => {
-        // window.location = `${url}/dashboard`;
+        window.location = `${vercel}/dashboard`;
       });
   };
 };
@@ -94,7 +95,7 @@ export const addPlant = info => {
       .then(res => {
         dispatch({
           type: ADD_PLANT_SUCCESS,
-          payload: res.data
+          payload: res.data.data
         });
       })
       .catch(err => {

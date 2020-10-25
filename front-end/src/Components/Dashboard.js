@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -67,6 +67,10 @@ const Dashboard = ({ plants, addPlant, editPlant, deletePlant }) => {
     evt.preventDefault();
     setAddButton(true);
   };
+
+  // useEffect(() => {
+  //   fetchI
+  // })
 
   return (
     <>

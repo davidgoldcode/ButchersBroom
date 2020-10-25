@@ -22,9 +22,9 @@ import {
 const initialState = {
   plants: [
     {
-      name: "paul",
-      species: "paulo",
-      notes: "check one two one two",
+      name: "",
+      species: "",
+      notes: "",
       frequency: "",
       lastWatered: ""
     }
@@ -32,6 +32,7 @@ const initialState = {
   username: "",
   email: "",
   error: "",
+  user_id: "",
   isLoading: false
 };
 
@@ -39,33 +40,41 @@ function addPlantReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_USER:
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     case LOGIN_USER_SUCCESS:
       return {
         ...state,
-        username: action.payload.username
+        isLoading: false,
+        username: action.payload.username,
+        email: action.payload.email,
+        user_id: action.payload.id
       };
     case LOGIN_USER_ERROR:
       return {
         ...state,
+        isLoading: false,
         error: action.payload
       };
     case REGISTER_USER:
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     case REGISTER_USER_SUCCESS:
-      console.log(action.payload, "actionnnnn");
       return {
         ...state,
         username: action.payload.username,
-        email: action.payload.email
+        email: action.payload.email,
+        user_id: action.payload.id,
+        isLoading: false
       };
     case REGISTER_USER_ERROR:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        isLoading: false
       };
     case EDIT_PLANT:
       return {

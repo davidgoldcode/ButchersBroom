@@ -42,6 +42,10 @@ const PlantCard = ({
           <Typography gutterBottom variant="h6" component="h2">
             {plant.species}
           </Typography>
+          <Typography gutterBottom variant="h6" component="h2">
+            {plant.lastWatered}
+          </Typography>
+
           <Typography>
             <Input
               disabled={editing === index ? false : true}
@@ -51,7 +55,6 @@ const PlantCard = ({
               value={plant.notes}
               name={index}
               onDoubleClick={() => doubleClickHandler(index)}
-              onChange={editPlant}
             />
           </Typography>
         </CardContent>
