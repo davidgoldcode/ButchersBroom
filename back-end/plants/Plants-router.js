@@ -32,7 +32,7 @@ router.get("/:id", (req, res) => {
 });
 
 // add plant
-router.get("/add", (req, res) => {
+router.post("/add", (req, res) => {
   const info = req.body;
 
   db.add(info)
@@ -40,12 +40,10 @@ router.get("/add", (req, res) => {
       if (plant) {
         res.status(200).json({ data: plant });
       } else {
-        res
-          .status(404)
-          .json({
-            message:
-              "Could not add plant. Make sure you've filled out all of your forms.",
-          });
+        res.status(404).json({
+          message:
+            "Could not add plant. Make sure you've filled out all of your forms.",
+        });
       }
     })
     .catch((err) => {

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Dashboard from "./Components/Dashboard";
+import Homepage from "./Components/Homepage";
 import * as yup from "yup";
 import formSchemaLogin from "./validation/formSchemaLogin";
 import formSchemaRegister from "./validation/formSchemaRegister";
@@ -80,6 +81,9 @@ function App({ loginUser, registerUser }) {
     <Router>
       <Switch>
         {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
+        <Route exact path="/">
+          <Homepage />
+        </Route>
         <Route exact path="/login">
           <Login
             submit={submit}
