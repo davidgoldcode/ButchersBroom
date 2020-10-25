@@ -1,8 +1,10 @@
-import { axiosWithAuth } from "./axiosWithAuth";
+import axiosWithAuth from "./axiosWithAuth";
 
-export function fetchPlantsApi() {
-  return axiosWithAuth()
-    .get("plants/myplants")
+const url = "https://butchers-broom.herokuapp.com";
+
+export function fetchPlantsApi(id) {
+  return axiosWithAuth(id)
+    .get(`${url}/api/plants`, id)
     .then(res => {
       return res.data;
     })

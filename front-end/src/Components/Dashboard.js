@@ -13,6 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
 import PlantCard from "./PlantCard";
 import AddPlant from "./AddPlant";
+import { plantListActions } from "../store/actions/plantActions";
 import {
   addPlant,
   deletePlant,
@@ -54,7 +55,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Dashboard = ({ plants, addPlant, editPlant, deletePlant }) => {
+const Dashboard = ({
+  plants,
+  addPlant,
+  editPlant,
+  deletePlant,
+  user_id,
+  plantListActions
+}) => {
   const classes = useStyles();
   const [editing, setEditing] = useState(null);
   const [addButton, setAddButton] = useState(false);
@@ -68,9 +76,10 @@ const Dashboard = ({ plants, addPlant, editPlant, deletePlant }) => {
     setAddButton(true);
   };
 
-  // useEffect(() => {
-  //   fetchI
-  // })
+  useEffect(() => {
+    plantListActions(user_id);
+    console.log("here i am");
+  }, []);
 
   return (
     <>
@@ -184,10 +193,14 @@ const Dashboard = ({ plants, addPlant, editPlant, deletePlant }) => {
 
 const mapStateToProps = state => {
   return {
-    plants: state.plants
+    plants: state.plants,
+    user_id: state.user_id
   };
 };
 
-export default connect(mapStateToProps, { addPlant, editPlant, deletePlant })(
-  Dashboard
-);
+export default connect(mapStateToProps, {
+  addPlant,
+  editPlant,
+  deletePlant,
+  plantListActions
+})(Dashboard);

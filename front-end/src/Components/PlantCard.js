@@ -43,7 +43,7 @@ const PlantCard = ({
             {plant.species}
           </Typography>
           <Typography gutterBottom variant="h6" component="h2">
-            {plant.lastWatered}
+            Last Watered: {plant.last_watered}
           </Typography>
 
           <Typography>

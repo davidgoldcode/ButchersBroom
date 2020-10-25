@@ -1,5 +1,9 @@
+## A simple app to help myself water some plants - currently a work in progress 😎
+
 <br />
 <br />
+
+## The Endpoints
 
 | Auth   |                    |             |                         |
 | ------ | ------------------ | ----------- | ----------------------- |
@@ -28,3 +32,18 @@
 | GET          | /api/plants/:id | get specific plant     | id        |
 | PUT          | /api/plants/:id | edit plant             | id        |
 | DELETE       | /api/plants/:id | delete plant           | id        |
+
+<br />
+<br />
+
+## The Technology
+
+React <br />
+NodeJS <br />
+Redux <br />
+Express <br />
+Knex <br />
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)

@@ -29,17 +29,20 @@ export const FETCH_USER_PLANT_LIST_ERROR = "FETCH_USER_PLANT_LIST_ERROR";
 const url = "https://butchers-broom.herokuapp.com";
 const vercel = "https://butchers-broom.vercel.app/";
 
-export const plantListActions = () => dispatch => {
-  dispatch({ type: FETCH_USER_PLANT_LIST });
-
-  axiosWithAuth()
-    .get(`plants/myplants`)
-    .then(res => {
-      dispatch({ type: FETCH_USER_PLANT_LIST_SUCCESS, payload: res.data });
-    })
-    .catch(err => {
-      dispatch({ type: FETCH_USER_PLANT_LIST_ERROR, payload: err.message });
-    });
+// load list
+export const plantListActions = id => {
+  return dispatch => {
+    dispatch({ type: FETCH_USER_PLANT_LIST });
+    console.log("its working!");
+    axiosWithAuth()
+      .get(`${url}/api/plants`, id)
+      .then(res => {
+        dispatch({ type: FETCH_USER_PLANT_LIST_SUCCESS, payload: res.data });
+      })
+      .catch(err => {
+        dispatch({ type: FETCH_USER_PLANT_LIST_ERROR, payload: err.message });
+      });
+  };
 };
 
 // Login
