@@ -87,6 +87,7 @@ export const registerUser = info => {
 // Add Plant
 export const addPlant = info => {
   return dispatch => {
+    console.log(info);
     dispatch({ type: ADD_PLANT });
     axiosWithAuth()
       .post(`${url}`, info)
@@ -97,7 +98,6 @@ export const addPlant = info => {
         });
       })
       .catch(err => {
-        console.log(err);
         dispatch({
           type: ADD_PLANT_ERROR,
           payload: {

@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import CameraIcon from "@material-ui/icons/PhotoCamera";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,8 +8,11 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import EcoIcon from "@material-ui/icons/Eco";
-import Input from "@material-ui/core/Input";
+import Box from "@material-ui/core/Box";
+import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
+import PlantCard from "./PlantCard";
+import AddPlant from "./AddPlant";
 import {
   addPlant,
   deletePlant,
@@ -22,6 +20,9 @@ import {
 } from "../store/actions/plantActions";
 
 const useStyles = makeStyles(theme => ({
+  addButton: {
+    opacity: ".8"
+  },
   icon: {
     marginRight: theme.spacing(2)
   },
@@ -53,42 +54,58 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const buttons = ["view", "edit", "delete"];
-
 const Dashboard = ({ plants, addPlant, editPlant, deletePlant }) => {
   const classes = useStyles();
   const [editing, setEditing] = useState(null);
-
-  const clickHandler = evt => {
-    evt.preventDefault();
-    const { name } = evt.target;
-    if (name.toLowerCase() === "edit") {
-      editPlant();
-    } else if (name.toLowerCase() === "delete") {
-      deletePlant();
-    } else {
-      return;
-    }
-  };
+  const [addButton, setAddButton] = useState(false);
 
   const doubleClickHandler = index => {
     setEditing(index);
   };
 
+  const addButtonHandler = evt => {
+    evt.preventDefault();
+    setAddButton(true);
+  };
+
   return (
     <>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <EcoIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Butcher's Broom
-          </Typography>
+      <AppBar
+        position="relative"
+        className={addButton ? classes.addButton : ""}
+      >
+        <Toolbar className={addButton ? classes.addButton : ""}>
+          <Box display="flex" flexGrow={1} onClick={() => setAddButton(false)}>
+            <EcoIcon className={classes.icon} />
+            <Typography variant="h6" color="inherit" noWrap>
+              Butcher's Broom
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <Button
+              variant="contained"
+              href="#outlined-buttons"
+              onClick={addButtonHandler}
+            >
+              <AddIcon color="primary" />
+              <Typography variant="h7" color="primary" noWrap>
+                Add Plant
+              </Typography>
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
       <main>
-        <div className={classes.heroContent}>
-          <Container maxWidth="sm">
+        {addButton && <AddPlant />}
+        <div
+          className={classes.heroContent}
+          onClick={() => setAddButton(false)}
+        >
+          <Container
+            maxWidth="sm"
+            className={addButton ? classes.addButton : ""}
+          >
             <Typography
               component="h2"
               variant="h3"
@@ -122,64 +139,31 @@ const Dashboard = ({ plants, addPlant, editPlant, deletePlant }) => {
             </div>
           </Container>
         </div>
-        <Container className={classes.cardGrid} maxWidth="md">
+        <Container
+          className={classes.cardGrid}
+          maxWidth="md"
+          onClick={() => setAddButton(false)}
+        >
           {/* End hero unit */}
-          <Grid container spacing={6}>
+          <Grid container spacing={6} onClick={() => setAddButton(false)}>
             {/* map through state */}
             {plants.map((plant, index) => (
-              <Grid item key={index} xs={12} sm={6} md={6}>
-                <Card>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/collection/4380837/1600x900"
-                    title="Image title"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {plant.name}
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="h2">
-                      {plant.species}
-                    </Typography>
-                    <Typography>
-                      <Input
-                        disabled={editing === index ? false : true}
-                        disableUnderline="true"
-                        multiline="true"
-                        placeholder={plant.notes}
-                        value={plant.notes}
-                        name={index}
-                        onDoubleClick={() => doubleClickHandler(index)}
-                        onChange={editPlant}
-                      />
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    {buttons.map(item => (
-                      <Button
-                        size="small"
-                        color="primary"
-                        name={
-                          editing === index && item === "edit"
-                            ? "submit changes"
-                            : item
-                        }
-                        onClick={() => setEditing(index)}
-                      >
-                        {editing === index && item === "edit"
-                          ? "submit changes"
-                          : item}
-                      </Button>
-                    ))}
-                  </CardActions>
-                </Card>
-              </Grid>
+              <PlantCard
+                plant={plant}
+                index={index}
+                doubleClickHandler={doubleClickHandler}
+                editPlant={editPlant}
+                setEditing={setEditing}
+                editing={editing}
+                classes={classes}
+                addButton={addButton}
+              />
             ))}
           </Grid>
         </Container>
       </main>
       {/* Footer */}
-      <footer className={classes.footer}>
+      <footer className={classes.footer} onClick={() => setAddButton(false)}>
         <Typography variant="h6" align="center" gutterBottom>
           Butcher's Broom
         </Typography>

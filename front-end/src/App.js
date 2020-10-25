@@ -6,7 +6,6 @@ import Dashboard from "./Components/Dashboard";
 import * as yup from "yup";
 import formSchemaLogin from "./validation/formSchemaLogin";
 import formSchemaRegister from "./validation/formSchemaRegister";
-import axiosWithAuth from "./utils/axiosWithAuth";
 import { connect } from "react-redux";
 import { loginUser, registerUser } from "./store/actions/plantActions.js";
 
@@ -25,7 +24,6 @@ const initialFormErrors = {
 const initialDisabled = true;
 
 function App({ loginUser, registerUser }) {
-  const [users, setUsers] = useState([]);
   const [userValues, setUserValues] = useState(initialUserValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(initialDisabled);
@@ -79,11 +77,6 @@ function App({ loginUser, registerUser }) {
   }, [userValues]);
 
   return (
-    // <Router>
-    //   <div className="App">
-    //     {/* <Navigation /> */}
-    //     <Switch>
-    //       {/* Login component goes here */}
     <Router>
       <Switch>
         {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}

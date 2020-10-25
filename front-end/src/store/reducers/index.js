@@ -81,7 +81,20 @@ function addPlantReducer(state = initialState, action) {
         ...state,
         error: action.payload
       };
-
+    case ADD_PLANT:
+      return {
+        ...state
+      };
+    case ADD_PLANT_SUCCESS:
+      return {
+        ...state,
+        plants: [...state.plants, action.payload]
+      };
+    case ADD_PLANT_ERROR:
+      return {
+        ...state,
+        error: action.payload
+      };
     case FETCH_USER_PLANT_LIST:
       return {
         ...state
