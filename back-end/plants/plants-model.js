@@ -9,8 +9,8 @@ module.exports = {
   getById,
 };
 
-function getAll() {
-  return db("plants");
+function getAll(user_id) {
+  return db("plants").where({ user_id });
 }
 
 function getBy(info) {

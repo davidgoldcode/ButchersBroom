@@ -5,7 +5,9 @@ const bcryptjs = require("bcryptjs");
 
 // get all plants
 router.get("/", (req, res) => {
-  db.getAll()
+  const user_id = req.body.user_id;
+
+  db.getAll(user_id)
     .then((plants) => {
       res.status(200).json({ data: plants });
     })
