@@ -31,6 +31,28 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// add plant
+router.get("/add", (req, res) => {
+  const info = req.body;
+
+  db.add(info)
+    .then((plant) => {
+      if (plant) {
+        res.status(200).json({ data: plant });
+      } else {
+        res
+          .status(404)
+          .json({
+            message:
+              "Could not add plant. Make sure you've filled out all of your forms.",
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 // edit plant info
 router.put("/:id", (req, res) => {
   const id = req.params.id;

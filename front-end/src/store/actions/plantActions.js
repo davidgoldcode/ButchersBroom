@@ -90,7 +90,7 @@ export const addPlant = info => {
     console.log(info);
     dispatch({ type: ADD_PLANT });
     axiosWithAuth()
-      .post(`${url}`, info)
+      .post("/api/plants/add", info)
       .then(res => {
         dispatch({
           type: ADD_PLANT_SUCCESS,
