@@ -32,7 +32,7 @@ router.get("/:id", (req, res) => {
 });
 
 // edit plant info
-router.put("/plant/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   const id = req.params.id;
   const changes = req.body;
 
@@ -50,7 +50,7 @@ router.put("/plant/:id", (req, res) => {
 });
 
 // delete plant
-router.delete("/plant/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   db.remove(id)
