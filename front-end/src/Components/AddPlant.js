@@ -57,7 +57,7 @@ const initialValues = {
   frequency: ""
 };
 
-const AddPlant = ({ addPlant }) => {
+const AddPlant = ({ addPlant, setAddButton }) => {
   const classes = useStyles();
   const [newPlant, setNewPlant] = useState(initialValues);
 
@@ -104,7 +104,11 @@ const AddPlant = ({ addPlant }) => {
         size="small"
         color="primary"
         name="submit"
-        onClick={() => addPlant(newPlant)}
+        onClick={evt => {
+          evt.preventDefault();
+          addPlant(newPlant);
+          setAddButton(false);
+        }}
       >
         Submit
       </Button>

@@ -56,6 +56,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const today = moment(new Date()).format("YYYY-MM-DD");
+
 const Dashboard = ({
   plants,
   addPlant,
@@ -67,7 +69,7 @@ const Dashboard = ({
   const classes = useStyles();
   const [editing, setEditing] = useState(null);
   const [addButton, setAddButton] = useState(false);
-  const [needsWater, setNeedsWater] = useState(0);
+  const [needsWater, setNeedsWater] = useState(true);
 
   const doubleClickHandler = index => {
     setEditing(index);
@@ -80,14 +82,11 @@ const Dashboard = ({
 
   const pastDate = plants => {
     let now = moment(new Date()).format("YYYY-MM-DD");
-    let arr = plants.filter(item => item.last_watered < now);
-    setNeedsWater(arr.length);
+    let arr = plants.filter(item => item.last_watered < today);
   };
 
   useEffect(() => {
     plantListActions(user_id);
-    pastDate(plants);
-    console.log(plants);
   }, []);
 
   return (
@@ -119,7 +118,7 @@ const Dashboard = ({
         </Toolbar>
       </AppBar>
       <main>
-        {addButton && <AddPlant />}
+        {addButton && <AddPlant setAddButton={setAddButton} />}
         <div
           className={classes.heroContent}
           onClick={() => setAddButton(false)}
@@ -127,6 +126,7 @@ const Dashboard = ({
           <Container
             maxWidth="sm"
             className={addButton ? classes.addButton : ""}
+            onClick={() => setAddButton(false)}
           >
             <Typography
               component="h2"
@@ -135,7 +135,7 @@ const Dashboard = ({
               color="textPrimary"
               gutterBottom
             >
-              You have {needsWater} plants that need to be watered
+              You have {needsWater.length} plants that need to be watered
             </Typography>
             <Typography
               variant="h6"
@@ -148,12 +148,20 @@ const Dashboard = ({
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant={needsWater ? "contained" : "outlined"}
+                    color="primary"
+                    onClick={() => setNeedsWater(true)}
+                  >
                     Plants that need your attention
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="outlined" color="primary">
+                  <Button
+                    variant={needsWater ? "outlined" : "contained"}
+                    color="primary"
+                    onClick={() => setNeedsWater(false)}
+                  >
                     All plants
                   </Button>
                 </Grid>
@@ -166,21 +174,35 @@ const Dashboard = ({
           maxWidth="md"
           onClick={() => setAddButton(false)}
         >
-          {/* End hero unit */}
           <Grid container spacing={6} onClick={() => setAddButton(false)}>
-            {/* map through state */}
-            {plants.map((plant, index) => (
-              <PlantCard
-                plant={plant}
-                index={index}
-                doubleClickHandler={doubleClickHandler}
-                editPlant={editPlant}
-                setEditing={setEditing}
-                editing={editing}
-                classes={classes}
-                addButton={addButton}
-              />
-            ))}
+            {!needsWater &&
+              plants.map((plant, index) => (
+                <PlantCard
+                  plant={plant}
+                  index={index}
+                  doubleClickHandler={doubleClickHandler}
+                  editPlant={editPlant}
+                  setEditing={setEditing}
+                  editing={editing}
+                  classes={classes}
+                  addButton={addButton}
+                />
+              ))}
+            {needsWater &&
+              plants.map((plant, index) =>
+                plant.last_watered < today ? (
+                  <PlantCard
+                    plant={plant}
+                    index={index}
+                    doubleClickHandler={doubleClickHandler}
+                    editPlant={editPlant}
+                    setEditing={setEditing}
+                    editing={editing}
+                    classes={classes}
+                    addButton={addButton}
+                  />
+                ) : null
+              )}
           </Grid>
         </Container>
       </main>

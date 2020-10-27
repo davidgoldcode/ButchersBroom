@@ -30,14 +30,17 @@ const url = "https://butchers-broom.herokuapp.com";
 const vercel = "https://butchers-broom.vercel.app/";
 
 // load list
-export const plantListActions = id => {
+export const plantListActions = user_id => {
   return dispatch => {
+    debugger;
     dispatch({ type: FETCH_USER_PLANT_LIST });
-    console.log("its working!");
     axiosWithAuth()
-      .get(`${url}/api/plants`, id)
+      .post(`${url}/api/plants`, user_id)
       .then(res => {
-        dispatch({ type: FETCH_USER_PLANT_LIST_SUCCESS, payload: res.data });
+        dispatch({
+          type: FETCH_USER_PLANT_LIST_SUCCESS,
+          payload: res.data
+        });
       })
       .catch(err => {
         dispatch({ type: FETCH_USER_PLANT_LIST_ERROR, payload: err.message });

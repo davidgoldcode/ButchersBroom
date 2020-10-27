@@ -8,12 +8,25 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
-const store = createStore(reducers, applyMiddleware(thunk, logger));
+const persistConfig = {
+  key: "root",
+  storage
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
+let store = createStore(persistedReducer, applyMiddleware(thunk, logger));
+let persistor = persistStore(store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <PersistGate persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>,
   document.getElementById("root")
 );

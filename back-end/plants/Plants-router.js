@@ -4,7 +4,7 @@ const router = express.Router();
 const bcryptjs = require("bcryptjs");
 
 // get all plants
-router.get("/", (req, res) => {
+router.post("/", (req, res) => {
   const user_id = req.body.user_id;
 
   db.getAll(user_id)
