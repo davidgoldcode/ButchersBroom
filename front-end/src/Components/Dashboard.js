@@ -19,6 +19,7 @@ import {
   deletePlant,
   editPlant
 } from "../store/actions/plantActions";
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
   addButton: {
@@ -66,6 +67,7 @@ const Dashboard = ({
   const classes = useStyles();
   const [editing, setEditing] = useState(null);
   const [addButton, setAddButton] = useState(false);
+  const [needsWater, setNeedsWater] = useState(0);
 
   const doubleClickHandler = index => {
     setEditing(index);
@@ -76,9 +78,16 @@ const Dashboard = ({
     setAddButton(true);
   };
 
+  const pastDate = plants => {
+    let now = moment(new Date()).format("YYYY-MM-DD");
+    let arr = plants.filter(item => item.last_watered < now);
+    setNeedsWater(arr.length);
+  };
+
   useEffect(() => {
     plantListActions(user_id);
-    console.log("here i am");
+    pastDate(plants);
+    console.log(plants);
   }, []);
 
   return (
@@ -126,7 +135,7 @@ const Dashboard = ({
               color="textPrimary"
               gutterBottom
             >
-              You have 0 plants that need to be watered
+              You have {needsWater} plants that need to be watered
             </Typography>
             <Typography
               variant="h6"
