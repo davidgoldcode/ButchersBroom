@@ -22,11 +22,18 @@ import {
 const initialState = {
   plants: [
     {
-      name: "",
+      name: "Paul",
       species: "",
       notes: "",
       frequency: "",
-      lastWatered: ""
+      lastWatered: "2000-03-03"
+    },
+    {
+      name: "Rodrigo",
+      species: "",
+      notes: "",
+      frequency: "",
+      lastWatered: "2020-02-02"
     }
   ],
   username: "",

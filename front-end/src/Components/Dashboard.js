@@ -80,11 +80,6 @@ const Dashboard = ({
     setAddButton(true);
   };
 
-  const pastDate = plants => {
-    let now = moment(new Date()).format("YYYY-MM-DD");
-    let arr = plants.filter(item => item.last_watered < today);
-  };
-
   useEffect(() => {
     plantListActions(user_id);
   }, []);
@@ -190,7 +185,7 @@ const Dashboard = ({
               ))}
             {needsWater &&
               plants.map((plant, index) =>
-                plant.last_watered < today ? (
+                plant.lastWatered < today || plant.last_watered == null ? (
                   <PlantCard
                     plant={plant}
                     index={index}
