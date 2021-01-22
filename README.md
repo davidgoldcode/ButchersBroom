@@ -1,4 +1,4 @@
-## A simple app to help myself water some plants - currently a work in progress 😎
+## A simple app to help myself water some plants 😎
 
 <br />
 <br />
